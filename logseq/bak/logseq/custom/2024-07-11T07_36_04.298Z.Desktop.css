@@ -1,0 +1,3 @@
+.ls-main-container {
+    max-width: 1200px; /* 设置编辑区域的最大宽度，根据需要调整数值 */
+    margin: 0 auto; /* 将编辑区域居中 */
