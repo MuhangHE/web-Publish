@@ -420,4 +420,4 @@
  ;;      ;use Percent-encoding for other invalid characters
  :file/name-format :triple-lowbar
  :ui/show-brackets? false
- :editor/logical-outdenting? false}
+ :editor/logical-outdenting? true}
