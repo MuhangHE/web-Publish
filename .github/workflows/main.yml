@@ -21,10 +21,20 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+      
+      # Use updated artifact upload and download actions
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: $GITHUB_WORKSPACE/some-path
+
       - name: Logseq Publish 🚩
         uses: MuhangHE/logseq-publish@main
+      
       - name: add a nojekyll file
         run: touch $GITHUB_WORKSPACE/www/.nojekyll
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
@@ -32,3 +42,9 @@ jobs:
           folder: www # The folder the action should deploy.
           clean: true
           single-commit: true
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+          path: $GITHUB_WORKSPACE/another-path
