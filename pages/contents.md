@@ -1,4 +1,4 @@
-tags:: public
+public:: true
 
-- [[恋爱的犀牛]]
-- [[PhD经验]]
+- Books
+	- [[恋爱的犀牛]]
