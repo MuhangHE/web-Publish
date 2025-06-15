@@ -13,21 +13,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Java (required by Logseq)
+        uses: actions/setup-java@v3
         with:
-          node-version: '20'  # or whatever version you prefer
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Install logseq-publish CLI
-        run: npm install -g logseq-publish
+      - name: Set up Logseq Export Environment
+        run: |
+          sudo apt update
+          sudo apt install -y unzip
+          wget https://github.com/logseq/logseq/releases/download/0.10.9/Logseq-linux-x64.zip -O logseq.zip
+          unzip logseq.zip -d logseq
+          chmod +x ./logseq/Logseq
 
-      - name: Build site with Logseq Publish 🚩
-        run: logseq-publish
+      - name: Export site using Logseq static-export
+        run: ./logseq/Logseq export ./ --output ./www
 
       - name: Add .nojekyll
         run: touch www/.nojekyll
 
-      - name: Deploy to GitHub Pages 🚀
+      - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
