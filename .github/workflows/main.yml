@@ -16,14 +16,21 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y fuse
+          sudo apt install -y fuse jq
+
+      - name: Get latest Logseq AppImage URL
+        id: geturl
+        run: |
+          url=$(curl -s https://api.github.com/repos/logseq/logseq/releases/latest \
+            | jq -r '.assets[] | select(.name | test("Logseq-linux-x64-.*\\.AppImage")) | .browser_download_url')
+          echo "DOWNLOAD_URL=$url" >> $GITHUB_OUTPUT
 
       - name: Download Logseq AppImage
         run: |
-          wget https://github.com/logseq/logseq/releases/latest/download/Logseq-linux-x64.AppImage -O Logseq.AppImage
+          wget "${{ steps.geturl.outputs.DOWNLOAD_URL }}" -O Logseq.AppImage
           chmod +x Logseq.AppImage
 
-      - name: Export site with Logseq AppImage
+      - name: Export site using Logseq AppImage
         run: |
           ./Logseq.AppImage export ./ --output ./www
 
